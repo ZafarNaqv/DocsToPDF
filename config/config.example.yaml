@@ -1,5 +1,2 @@
 docs:
   location: ./docs/Cover-Letter-software.docx #Absolute paths would be more practical
-
-pdf:
-    location: ./docs/ #Absolute paths would be more practical

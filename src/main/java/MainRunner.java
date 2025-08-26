@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import picocli.CommandLine;
 import util.ConfigLoader;
 import util.FileUtil;
-import util.PlaceHolderUtil;
 
 import java.io.IOException;
 import java.util.concurrent.Callable;
@@ -15,27 +14,31 @@ import java.util.concurrent.Callable;
 public class MainRunner implements Callable<Integer> {
     private static final Logger logger = LoggerFactory.getLogger(MainRunner.class);
     
-    
-    @CommandLine.Option(names = {"-n", "--newPdf"}, description = "Generates new pdf")
-    boolean generateNewPDF = true;
-    
     @CommandLine.Parameters(index = "0", description = "Company name to be replaced")
     String companyName;
     
-    @CommandLine.Option(names = {"-c", "--config"}, description = "Path to YAML config file", defaultValue = "config.yaml")
+    @CommandLine.Parameters(index = "1", description = "Job Position")
+    String jobPosition;
+    
+    @CommandLine.Option(names = {"-c", "--config"}, description = "Path to YAML config file", defaultValue = "config/config.yaml")
     private String configPath;
     
     @Override
     public Integer call(){
+        logger.debug("CompanyName={}, JobPosition={}, ConfigPath={}", companyName, jobPosition, configPath);
         try {
             Config cfg = ConfigLoader.load(configPath);
             logger.info("Config file read successfully.");
-            PdfGenerator pdfGenerator = new PdfGenerator(cfg,companyName);
+            PdfGenerator pdfGenerator = new PdfGenerator(cfg,companyName,jobPosition);
             FileUtil.generatePdf(pdfGenerator);
+            logger.info("Successfully generated PDF.");
         } catch (IOException e) {
+            logger.error("Failed to find config file", e);
             throw new IllegalArgumentException("Failed to find config file", e);
+        } catch (Exception e) {
+            logger.error("Unexpected error while generating PDF", e);
+            throw new RuntimeException("PDF generation failed", e);
         }
-        logger.info("Successfully generated PDF.");
         return 0;
     }
     
