@@ -1,5 +1,5 @@
 package util;
-import model.PdfGenerator;
+import model.PdfTemplateGenerator;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 
 import javax.xml.bind.JAXBException;
@@ -9,9 +9,9 @@ import java.io.IOException;
 
 public class FileUtil {
     
-    public static void generatePdf(PdfGenerator generator) {
+    public static void generatePdf(PdfTemplateGenerator generator) {
         
-        File inputDocx = new File(generator.getYamlConfig().docs.location);
+        File inputDocx = new File(generator.getYamlConfig().getDocs().getLocation());
         if (!inputDocx.exists()) {
             throw new IllegalArgumentException("Input DOCX not found: " + inputDocx.getAbsolutePath());
         }

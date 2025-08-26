@@ -1,9 +1,13 @@
 package model;
 
 public class Config {
-    public Docs docs;
+    private  Docs docs;
+    public Docs getDocs() {
+        return docs;
+    }
     
     public static class Docs {
-        public String location;
+        private String location;
+        public String getLocation() { return location; }
     }
 }

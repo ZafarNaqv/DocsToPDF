@@ -1,5 +1,5 @@
 import model.Config;
-import model.PdfGenerator;
+import model.PdfTemplateGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import picocli.CommandLine;
@@ -29,7 +29,7 @@ public class MainRunner implements Callable<Integer> {
         try {
             Config cfg = ConfigLoader.load(configPath);
             logger.info("Config file read successfully.");
-            PdfGenerator pdfGenerator = new PdfGenerator(cfg,companyName,jobPosition);
+            PdfTemplateGenerator pdfGenerator = new PdfTemplateGenerator(cfg,companyName,jobPosition);
             FileUtil.generatePdf(pdfGenerator);
             logger.info("Successfully generated PDF.");
         } catch (IOException e) {

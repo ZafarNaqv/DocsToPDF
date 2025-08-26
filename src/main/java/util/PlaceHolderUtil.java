@@ -1,6 +1,6 @@
 package util;
 
-import model.PdfGenerator;
+import model.PdfTemplateGenerator;
 import org.docx4j.Docx4J;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
@@ -31,7 +31,7 @@ public class PlaceHolderUtil {
         return cleaned.substring(0, Math.min(8, cleaned.length()));
     }
     
-    public static void replace(File inputDocx, String outputPdfPath, PdfGenerator generator) throws Docx4JException, IOException, JAXBException, jakarta.xml.bind.JAXBException {
+    public static void replace(File inputDocx, String outputPdfPath, PdfTemplateGenerator generator) throws Docx4JException, IOException, JAXBException, jakarta.xml.bind.JAXBException {
         WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage.load(inputDocx);
         MainDocumentPart documentPart = wordMLPackage.getMainDocumentPart();
         

@@ -1,9 +1,9 @@
 package model;
 
-public class PdfGenerator extends AbstractGenerator {
+public class PdfTemplateGenerator extends AbstractTemplateGenerator {
     private Config yamlConfig;
     
-    public PdfGenerator(Config yamlConfig, String fullCompanyName, String jobPosition) {
+    public PdfTemplateGenerator(Config yamlConfig, String fullCompanyName, String jobPosition) {
         super(fullCompanyName,jobPosition);
         this.yamlConfig = yamlConfig;
     }
