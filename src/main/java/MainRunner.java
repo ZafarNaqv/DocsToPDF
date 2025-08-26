@@ -20,7 +20,7 @@ public class MainRunner implements Callable<Integer> {
     @CommandLine.Parameters(index = "1", description = "Job Position")
     String jobPosition;
     
-    @CommandLine.Option(names = {"-c", "--config"}, description = "Path to YAML config file", defaultValue = "config/config.yaml")
+    @CommandLine.Option(names = {"-c", "--config"}, description = "Path to YAML config file", defaultValue = "config.yaml")
     private String configPath;
     
     @Override
@@ -32,9 +32,12 @@ public class MainRunner implements Callable<Integer> {
             PdfTemplateGenerator pdfGenerator = new PdfTemplateGenerator(cfg,companyName,jobPosition);
             FileUtil.generatePdf(pdfGenerator);
             logger.info("Successfully generated PDF.");
+        } catch (IllegalArgumentException e) {
+            logger.error("Invalid input or configuration", e);
+            return 2;
         } catch (IOException e) {
             logger.error("Failed to find config file", e);
-            throw new IllegalArgumentException("Failed to find config file", e);
+            return 1;
         } catch (Exception e) {
             logger.error("Unexpected error while generating PDF", e);
             throw new RuntimeException("PDF generation failed", e);

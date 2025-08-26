@@ -5,12 +5,16 @@ import org.docx4j.Docx4J;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.xml.bind.JAXBException;
 import java.io.*;
 import java.util.Map;
 
 public class PlaceHolderUtil {
+    private static final Logger logger = LoggerFactory.getLogger(PlaceHolderUtil.class);
     public static final String COMPANY_NAME_KEY = "{{companyName}}";
     public static final String JOB_POSITION_KEY = "{{jobPosition}}";
     
@@ -34,10 +38,16 @@ public class PlaceHolderUtil {
     public static void replace(File inputDocx, String outputPdfPath, PdfTemplateGenerator generator) throws Docx4JException, IOException, JAXBException, jakarta.xml.bind.JAXBException {
         WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage.load(inputDocx);
         MainDocumentPart documentPart = wordMLPackage.getMainDocumentPart();
-        
+        int placeHoldersCount = 0;
         String xml = documentPart.getXML();
         for (Map.Entry<String, String> entry : generator.getPlaceHolderMap().entrySet()) {
+            placeHoldersCount = StringUtils.countMatches(xml, entry.getKey());
             xml = xml.replace(entry.getKey(), entry.getValue());
+        }
+        if(placeHoldersCount > 0) {
+            logger.info("Replaced {} placeholders", placeHoldersCount);
+        }else{
+            throw new IllegalArgumentException("No placeholders found. Kindly update docx with {{companyName}} and {{jobPosition}}");
         }
         documentPart.getContent().clear();
         documentPart.setJaxbElement(
