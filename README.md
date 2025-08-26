@@ -9,7 +9,9 @@ It replaces placeholders in your cover letter (e.g., company name, job position)
 
 ## 🚀 How to Run
 
-1. Extract the ZIP file to a folder of your choice.
+1a. Extract the ZIP file to a folder of your choice.
+1b. OR Create Jar Package and run it with following commands:
+1c.  java -jar DocsToPdf-1.0-SNAPSHOT.jar "your-company "job-position" -c config.yaml
 
 2. Open `config.yaml` in a text editor.
 
