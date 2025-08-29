@@ -28,12 +28,12 @@ public class MainRunner implements Callable<Integer> {
         logger.debug("CompanyName={}, JobPosition={}, ConfigPath={}", companyName, jobPosition, configPath);
         try {
             Config cfg = ConfigLoader.load(configPath);
-            logger.info("Config file read successfully.");
-            PdfTemplateGenerator pdfGenerator = new PdfTemplateGenerator(cfg,companyName,jobPosition);
+            logger.info("Config file read successfully from location:{}",configPath);
+            PdfTemplateGenerator pdfGenerator = new PdfTemplateGenerator(cfg,companyName,jobPosition,configPath);
             FileUtil.generatePdf(pdfGenerator);
             logger.info("Successfully generated PDF.");
         } catch (IllegalArgumentException e) {
-            logger.error("Invalid input or configuration", e);
+            logger.error("Invalid configuration:{}", e.getMessage());
             return 2;
         } catch (IOException e) {
             logger.error("Failed to find config file", e);

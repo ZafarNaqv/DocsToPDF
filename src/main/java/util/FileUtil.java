@@ -13,13 +13,14 @@ public class FileUtil {
         
         File inputDocx = new File(generator.getYamlConfig().getDocs().getLocation());
         if (!inputDocx.exists()) {
-            throw new IllegalArgumentException("Input DOCX not found: " + inputDocx.getAbsolutePath());
+            throw new IllegalArgumentException("Input DOCX not found at location: " + inputDocx.getAbsolutePath()+".\n Kindly update the path of .docx file in the config.yaml as described in README.md.");
         }
         
         String outputPathPdf = inputDocx.getParent() + File.separator + removeExtension(inputDocx.getName()) +
                 "_" + generator.getSafeCompanyName() + ".pdf";
         try {
             PlaceHolderUtil.replace(inputDocx, outputPathPdf,generator);
+            ConfigLoader.save(generator.getYamlConfig());
         } catch (JAXBException | Docx4JException | IOException | jakarta.xml.bind.JAXBException e) {
             throw new RuntimeException("Failed to Generate PDF", e);
         }
