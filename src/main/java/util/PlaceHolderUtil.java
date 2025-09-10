@@ -22,9 +22,19 @@ public class PlaceHolderUtil {
     
     public static Map<String,String> createPlaceHolderMap(String companyName, String jobPosition) {
         return Map.of(
-                COMPANY_NAME_KEY, companyName,
-                JOB_POSITION_KEY, jobPosition
+                COMPANY_NAME_KEY, escapeXml(companyName),
+                JOB_POSITION_KEY, escapeXml(jobPosition)
         );
+    }
+    
+    public static String escapeXml(String input) {
+        if (input == null) return null;
+        return input
+                .replace("&", "&amp;")
+                .replace("<", "&lt;")
+                .replace(">", "&gt;")
+                .replace("\"", "&quot;")
+                .replace("'", "&apos;");
     }
     
     public static String buildCompanySuffix(String name) {
